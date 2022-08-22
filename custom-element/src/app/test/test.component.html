@@ -1,0 +1,346 @@
+<div fxLayout="row" fxLayoutAlign="start">		
+	<span fxFlex="1 1 auto"></span>
+	<mat-icon mat-dialog-close class="mat-icon-close">highlight_off</mat-icon>
+</div>
+<div class="place-report-content">	
+	<div class="content map-page-container places-map-page-container" id="place-plan-report-v4">		
+		<div class="places-report">
+			<div class="details print-margin-top" id="report-top" (currentWidth)="setReportWidth($event)">
+				<div *ngIf="details.name"><b>Name:</b> {{ details.name }}</div>
+				<div *ngIf="details.state || (details.market && details.market!.st_name)"><b>State:</b> {{
+					details.state ||
+					(details.market && details.market!.st_name) }}</div>
+				<div *ngIf="details.market && details.market!.co_name">
+					<b>County: </b>{{ details.market!.co_name }}
+				</div>
+				<div *ngIf="details.market && details.market!.dma_name">
+					<b>DMA: </b>{{ details.market!.dma_name }}
+				</div>
+				<div *ngIf="details.market && details.market!.cbsa_name">
+					<b>CBSA: </b>{{ details.market!.cbsa_name }}
+				</div>
+				<div *ngIf="details.city"><b>City:</b> {{ details.city }}</div>
+				<div *ngIf="details.postal_code || (details.market && details.market!.st_usps)">
+					<b>Postal Code:</b> {{ details.postal_code || (details.market && details.market!.st_usps) }}
+				</div>
+				<div *ngIf="details.street_address">
+					<b>Address:</b> {{ details.street_address }}
+				</div>
+				<div *ngIf="details.place_type">
+					<b>Place Type:</b> {{ details.place_type }}
+				</div>
+			</div>
+
+			<div class="navigation-pane">
+				<br />
+				<div class="navigation-panel">
+					<a (click)="scrollReport('exposure-profile')">Visitation Profile</a>
+					<span class="navigation-bubble"></span>
+					<a (click)="scrollReport('demographics-profile')">Demographics</a>
+					<span class="navigation-bubble"></span>
+					<a (click)="scrollReport('visits-by-day')">Visits by Day</a>
+				</div>
+				<div class="navigation-panel">
+					<a (click)="scrollReport('visits-through-time')">Visits Through Time</a>
+					<span class="navigation-bubble"></span>
+					<a (click)="scrollReport('visits-by-location')">Visits by Location</a>
+					<span class="navigation-bubble"></span>
+					<a (click)="scrollReport('consumer-profile')">Consumer Profile</a>
+				</div>
+				<br />
+				<button mat-button class="imx-btn-secondary jump-to-top-button" (click)="scrollReport('report-top')">
+					<mat-icon svgIcon="imxlib-icon-up"></mat-icon>
+				</button>
+			</div>
+			<div *ngIf="errorOccurred">
+				<br />
+				<hr />
+				<br />
+				An error occurred loading additional data. There are no stats to be shown.
+			</div>
+
+			<div *ngIf="!errorOccurred">
+				<div style="display: flex; justify-content: flex-end; height: 1.5rem"
+					class="print-hidden e2e-place-report-ui-date-reset">
+					<button class="imx-btn-secondary" mat-button (click)="resetDateSelection()"> Reset </button>
+				</div>
+
+				<div class="date-week-container">
+					<div class="date-container">
+						<mat-label>Starting Date</mat-label>
+						<imx-datepicker [value]="weekStart" (dateChange)="weekStart = $event.value"
+							[min]="minStartingDate" [max]="maxStartingDate" [dateFilter]="validWeekStart">
+						</imx-datepicker>
+					</div>
+					<div class="week-container">
+						<Label class="light-label"># of Weeks</Label>										
+						<imx-slider [minValue]="1" [maxValue]="numWeeks" [(value)]="numWeeks" [(highvalue)]="numWeeks" [sliderOptions]="weekSliderOptions" [sliderValues]="sliderValues">
+						</imx-slider>
+					</div>
+				</div>
+
+				<div class="places-table-container">
+					<mat-slide-toggle class="imx-slid-toggle print-hidden" [checked]="useDailyGrouping"
+						(change)="useDailyGrouping = $event.checked">
+						Show table as daily averages
+					</mat-slide-toggle>
+					<div class="avg-table">
+						<imx-table *ngIf="tableData" [IMXDataSource]="tableData" [displayedColumns]="tableColumns" (sortChange)="sorting($event)" [sort]="defaultTableSort"></imx-table>				
+					</div>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Visits by Year</div>
+					<imx-multi-line-chart *ngIf="visitsYearYearData" [data]="visitsYearYearData"
+						[options]="stackedLineOptions">
+					</imx-multi-line-chart>
+				</div>
+
+				<br /><br />
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title" style="font-size: 1.5rem" id="exposure-profile">
+						Placecast Visitation Profile
+					</div>
+				</div>
+				<hr />
+				<br />
+				<!-- HOUR/DAY CHARTS -->
+				<div class="place-chart-container" id="visits-by-day">
+					<div class="chart-title">Visits by Day</div>
+					<imx-bar-chart *ngIf="visitsDayData" [data]="visitsDayData" [options]="dayBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Visits by Hour by Day</div>
+					<imx-multi-line-chart *ngIf="visitsDayHourData" [data]="visitsDayHourData"
+						[options]="stackedLineOptions">
+					</imx-multi-line-chart>
+				</div>
+				<div class="place-chart-container" style="color: var(--primary-bg); margin-left: 64px">
+					<div>
+						<b>Visits Unique Persons: </b> {{ details.visits_unique_persons }}
+					</div>
+					<div>
+						<b>Visits Frequency: </b> {{ details.visits_frequency_per_person }}
+					</div>
+					<div>
+						<b>Average Dwell (minutes): </b> {{ details.visits_avg_dwell }}
+					</div>
+				</div>
+				<div class="print-split print-break print-margin-top" [class.split-container]="contentWidth > 1200">
+					<div class="place-chart-container">
+						<div class="chart-title">Daily Avg Dwell</div>
+						<imx-donut-chart *ngIf="dailyDwellPie" [data]="dailyDwellPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+					<div class="place-chart-container">
+						<div class="chart-title">Local vs Nonlocal</div>
+						<imx-donut-chart *ngIf="localNonlocalPie" [data]="localNonlocalPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+				</div>
+				<div class="place-chart-container" id="visits-through-time">
+					<div class="chart-title">Visits through time</div>
+					<imx-line-chart #lineChart *ngIf="allVisitData" [data]="allVisitData" [options]="allDataOptions">
+					</imx-line-chart>
+				</div>
+
+				<br /><br />
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title" style="font-size: 1.5rem" id="demographics-profile">
+						Demographics Profile
+					</div>
+				</div>
+				<hr />
+				<br />
+
+				<!-- DEMOGRAPHIC PIE CHARTS -->
+				<div [class.split-container]="contentWidth > 1200" class="print-split">
+					<div class="place-chart-container">
+						<div class="chart-title">Income</div>
+						<imx-donut-chart *ngIf="topIncomePie" [data]="topIncomePie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+					<div class="place-chart-container">
+						<div class="chart-title">Ethnicity</div>
+						<imx-donut-chart *ngIf="topEthnicityPie" [data]="topEthnicityPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+				</div>
+				<!-- this one was consistently too wide for others.... so we'll just have it separate I guess-->
+				<div [class.split-container]="contentWidth > 1200" class="print-split race-container">
+					<div class="place-chart-container race-pie">
+						<div class="chart-title">Race</div>
+						<imx-donut-chart *ngIf="topRacePie" [data]="topRacePie" [options]="racePieOptions">
+						</imx-donut-chart>
+					</div>
+					<div class="place-chart-container">
+						<!-- Spacer to help line up race chart with others in split-mode -->
+					</div>
+				</div>
+
+				<div [class.split-container]="contentWidth > 1200" class="print-break print-margin-top print-split">
+					<div class="place-chart-container">
+						<div class="chart-title">Gender</div>
+						<imx-donut-chart *ngIf="genderPie" [data]="genderPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+					<div class="place-chart-container">
+						<div class="chart-title">Age</div>
+						<imx-donut-chart *ngIf="topAgePie" [data]="topAgePie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+				</div>
+
+				<div [class.split-container]="contentWidth > 1200" class="print-split">
+					<div class="place-chart-container">
+						<div class="chart-title">Top 10 Prizm Segments</div>
+						<imx-donut-chart *ngIf="topPrizmPie" [data]="topPrizmPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+					<div class="place-chart-container">
+						<div class="chart-title">Next 10 Prizm Segments</div>
+						<imx-donut-chart *ngIf="nextPrizmPie" [data]="nextPrizmPie" [options]="donutOptions">
+						</imx-donut-chart>
+					</div>
+				</div>
+
+				<br /><br />
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title" style="font-size: 1.5rem" id="visits-by-location">
+						Location Data
+					</div>
+				</div>
+				<hr />
+				<br />
+
+				<div class="place-table-container place-chart-container">
+					<div class="chart-title" id="visits-by-zip">Top 10 ZIP Codes</div>
+					<div class="top10-table">
+						<imx-table *ngIf="zipData" [IMXDataSource]="zipData" [displayedColumns]="zipTableColumns"></imx-table>
+					</div>					
+				</div>
+				<div class="place-table-container place-chart-container print-break print-margin-top">
+					<div class="chart-title" id="visits-by-zip">Top 10 Counties</div>
+					<div class="top10-table">
+						<imx-table *ngIf="countyData" [IMXDataSource]="countyData" [displayedColumns]="countyTableColumns"></imx-table>						
+					</div>
+				</div>
+				<div class="place-table-container place-chart-container print-break print-margin-top">
+					<div class="chart-title">Top 10 DMAs</div>
+					<div class="top10-table">
+						<imx-table *ngIf="dmaData" [IMXDataSource]="dmaData" [displayedColumns]="dmaTableColumns"></imx-table>							
+					</div>				
+				</div>
+
+				<div class="place-table-container place-chart-container print-break print-margin-top">
+					<div class="chart-title">Top 10 States</div>
+					<div class="top10-table">
+						<imx-table *ngIf="stateData" [IMXDataSource]="stateData" [displayedColumns]="stateTableColumns"></imx-table>						
+					</div>
+				</div>
+
+				<!-- CONSUMER BAR CHARTS -->
+				<br /><br />
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title" style="font-size: 1.5rem" id="consumer-profile">
+						Consumer Behavior Profile
+					</div>
+				</div>
+				<hr />
+				<br />
+				<div class="place-chart-container">
+					<div class="chart-title">Digital Video Displays</div>
+					<imx-bar-chart *ngIf="videoData" [data]="videoData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Alcohol Consumption</div>
+					<imx-bar-chart *ngIf="alcoholConsumptionData" [data]="alcoholConsumptionData"
+						[options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Automotive</div>
+					<imx-bar-chart *ngIf="automotiveData" [data]="automotiveData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Commuting and Transportation</div>
+					<imx-bar-chart *ngIf="transportationData" [data]="transportationData"
+						[options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<!-- <div class="place-chart-container print-break print-margin-top">
+			<div class="chart-title">Environment</div>
+			<imx-bar-chart *ngIf="environmentData" [data]="environmentData" [options]="demographicBarOptions"></imx-bar-chart>
+		</div> -->
+				<div class="place-chart-container">
+					<div class="chart-title">Financial</div>
+					<imx-bar-chart *ngIf="financialData" [data]="financialData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Food and Beverages</div>
+					<imx-bar-chart *ngIf="foodData" [data]="foodData" [options]="demographicBarOptions"></imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Health</div>
+					<imx-bar-chart *ngIf="healthData" [data]="healthData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Items in the Home</div>
+					<imx-bar-chart *ngIf="itemsInHomeData" [data]="itemsInHomeData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Apparel and Jewelry</div>
+					<imx-bar-chart *ngIf="apparelData" [data]="apparelData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Home Improvements</div>
+					<imx-bar-chart *ngIf="homeImprovementData" [data]="homeImprovementData"
+						[options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Psychographics</div>
+					<imx-bar-chart *ngIf="psychographicsData" [data]="psychographicsData"
+						[options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Restaurants</div>
+					<imx-bar-chart *ngIf="restaurantData" [data]="restaurantData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Retail Shopping</div>
+					<imx-bar-chart *ngIf="shoppingData" [data]="shoppingData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Sports and Leisure</div>
+					<imx-bar-chart *ngIf="sportsData" [data]="sportsData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container">
+					<div class="chart-title">Travel</div>
+					<imx-bar-chart *ngIf="travelData" [data]="travelData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+				<div class="place-chart-container print-break print-margin-top">
+					<div class="chart-title">Voting</div>
+					<imx-bar-chart *ngIf="votingData" [data]="votingData" [options]="demographicBarOptions">
+					</imx-bar-chart>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <div mat-dialog-actions align="end">
+		<button class="pdf-button print-button" (click)="openPrint()">
+			<span>Export as PDF<mat-icon>print</mat-icon></span>
+		</button>
+	</div> -->
+</div>

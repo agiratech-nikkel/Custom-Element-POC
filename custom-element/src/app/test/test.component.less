@@ -1,0 +1,383 @@
+@import '/node_modules/@intermx/ui-platform/src/assets/theme/index.less';
+@import './variables.less';
+
+::ng-deep {	
+
+	.mat-dialog-container{
+	 padding:15px !important;	
+	}
+	
+	.place-report-content {
+		overflow-y: auto;	
+		width: 100%;
+		height: calc(100% - 0.5rem);
+	}		
+	.places-report {
+		.navigation-panel a,
+		.place-chart-container .chart-title{
+			color:#00538B!important;
+		}
+		.navigation-panel span.navigation-bubble {
+			background-color:#00538B!important;
+		}
+
+		.imx-slid-toggle.mat-slide-toggle.mat-checked .mat-slide-toggle-bar,
+		.imx-slid-toggle.mat-slide-toggle .mat-slide-toggle-content {
+			color:#00538B!important;
+		}
+		
+		.navigation-panel a:hover{
+			color:#FCBD32 !important;
+		}
+		
+		.imx-slider {
+			display: inline-block;
+			position: relative;
+			height: 4px;
+			width: 100%;
+			margin: 15px 0 15px;
+			vertical-align: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			touch-action: pan-y;
+		}
+
+
+		.imx-slider {
+			min-height: 25px;			
+		}
+
+		.imx-slider .imx-ngx-slider .ngx-slider-ceil,.imx-slider .imx-ngx-slider .ngx-slider-floor {
+			display:block !important;
+		}
+
+		.imx-slider .imx-ngx-slider .imx-slider-legend-text {
+			display:none !important;
+		}
+
+		.imx-slider .imx-ngx-slider .ngx-slider {
+			margin: 10px;
+		}
+	
+		.ngx-slider .ngx-slider-pointer:after {
+			top:0 !important;
+			left:0 !important;
+		}
+
+		.imx-slider .imx-ngx-slider .ngx-slider-pointer {
+			width: 13px!important;
+			height: 13px!important;
+			top: -4.5px!important;
+		}
+
+		.avg-table .imx-table-action-col__status {
+			width: 95px;
+		}
+		.imx-table .mat-table .mat-row .mat-cell:last-of-type {
+			padding-right: 0 !important;
+		}
+
+		.imx-table .mat-table .mat-sort-header-container {
+			width:auto;
+		}
+
+		.imx-table .mat-table .mat-cell,
+		.imx-table .mat-table .mat-header-cell
+		{
+			max-width: 100%;
+			justify-content: center;
+		}	
+
+	  .places-report mat-cell:first-of-type {
+			padding-left: 24px !important;
+		}	
+
+		.mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+			padding-left: 32px !important;
+		}
+
+		.places-report .top10-table mat-cell:first-of-type{
+			padding-left:0;
+		}
+
+		.top10-table .imx-table .mat-table .mat-row .mat-cell:first-child {
+			margin-right: 0px;
+		}
+
+		.top10-table .imx-table .mat-table .mat-header-row .mat-header-cell:first-child{
+			margin-right: 40px;
+		}
+
+		
+		.top10-table .imx-table-cell-container {			
+			justify-content: center;
+		}
+
+		.top10-table .imx-table .mat-table .mat-cell, 
+		.top10-table .imx-table .mat-table .mat-header-cell{
+			min-width: auto !important;
+			max-width: unset !important;
+			left: 0px !important;
+			z-index: 1 !important;
+			justify-content: center;
+		}
+		.top10-table .imx-table .mat-table .mat-sort-header-container {
+			justify-content: center !important;
+		}
+
+		div.imx-table-paginator {
+			display: none;
+		}
+
+		.date-week-container {
+			display: flex;
+			margin-bottom: 1rem;
+			.date-container {
+				margin-bottom: 0.5rem;
+				position: relative;
+				bottom: 0.5rem;
+				.date-picker-container {
+					height: unset;
+					padding: 0.5rem;
+					margin-right: 0.5rem;
+					input {
+						width: 74px;
+					}
+					.mat-datepicker-toggle button.mat-icon-button svg {
+						height: 24px;
+						width: 24px;
+					}
+				}
+				.imx-datepicker {
+					width: 132px;
+					margin-right: 12px;
+				}
+			}
+			.week-container {
+				flex: 1;
+				.slider-wrapper {
+					padding: 10px;
+				}
+			}
+		}	
+		.date-container .imx-datepicker {
+			display: flex;
+			border: 2px solid #00538B;
+			color: #00538B;
+			border-radius: 0.5rem;
+			padding-left: 0.5rem;
+			height: 30px;
+			padding: 0.5rem;
+		}
+	
+		.places-table-container .menu-table-container .mat-table {
+			.mat-header-row .mat-header-cell {
+				.mat-sort-header-container {
+					position: relative;
+					.mat-sort-header-arrow {
+						position: absolute;
+						right: -4px;
+					}
+				}
+				padding: 0.25rem;
+			}
+			.mat-cell {
+				padding: 0 0.25rem;
+			}
+			.mat-header-cell div,
+			.mat-cell div {
+				font-size: 14px;
+				.mat-sort-header-arrow {
+					margin: 0;
+				}
+			}
+		}		
+
+		@media print {
+			.place-chart-container.race-pie {
+				margin-left: 64px;
+				.chart-title {
+					text-align: left;
+					margin-left: 240px;
+				}
+			}
+			.print-split {
+				display: flex;
+				.place-chart-container {
+					width: 670px;
+					flex: 0;
+				}
+			}
+		}
+		.split-container {
+			display: flex;
+			justify-content: space-around;
+			/* this section helps line the race container up with the other charts */
+			&.race-container {
+				.place-chart-container.race-container {
+					flex-basis: 652px;
+				}
+				.place-chart-container {
+					flex-basis: 542px;
+				}
+			}
+			.place-chart-container {
+				@media print {
+					width: 680px;
+					flex: 0;
+				}
+			}
+		}
+		.place-chart-container .chart-title {
+			text-align: center;
+			color: var(--primary-bg);
+			margin-top: 1rem;
+		}
+
+		.imx-chart .x.axis.tilted .tick text {
+			// more tilted because these are pretty long and we don't want lots of white space
+			transform: rotate(-66deg) translate(-8px, -10px);
+		}
+
+		.navigation-panel {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			span.navigation-bubble {
+				border-radius: 1rem;
+				width: 0.5rem;
+				height: 0.5rem;
+				background-color: var(--primary-bg);
+			}
+			a {
+				color: var(--primary-bg);
+				cursor: pointer;
+				flex: 1;
+				text-align: center;
+				&:hover {
+					color: var(--highlight-bg);
+				}
+			}
+		}
+		.jump-to-top-button {
+			position: absolute;
+			bottom: 5rem;
+			right: 4rem;
+			background-color: white;
+			padding: 0;
+			min-width: 38px;
+			z-index: 101; /* table headers seem to use 100.... keep it simple next time so I don't have to use such a big number */
+			transition: opacity 500ms;
+			opacity: 1;
+			@media print {
+				display: none;	
+			}
+			&.invisible {
+				opacity: 0;
+			}
+		}
+		
+		.places-reset-button {
+			@media print {
+			  display: none;
+			}			
+		}
+	}	
+
+	button.menu-button {
+		margin-bottom: 0.5rem;
+		background-color: white;
+		span {
+		  display: flex;
+		  align-items: center;
+		}
+	}	
+
+	.pdf-button {
+		border: 1px solid var(--primary-bg);
+		font-size: 14px;
+		line-height: 16px;
+		padding: 0.5rem;
+		cursor: pointer;
+		background-color: transparent;
+		color: var(--primary-bg);
+		border-radius: 5px;
+  
+		// do whatever colors we defined
+		.for(@colors, {
+		  @name: extract(@value, 1);
+		  @color: extract(@value, 2);
+		  &.is-@{name} {
+			border-color: @color;
+			color: @color;
+			&.is-filled {
+			  background-color: @color;
+			}
+		  }
+		});
+  
+		> span,
+		> span div.trigger{
+		  line-height: 1rem;
+		  display: flex;
+    	  align-items: center;
+		}
+  
+		&.is-filled {
+		  color: var(--white-color);
+		  border-color: transparent;
+		}
+	}
+
+	.print-button span{
+		display: flex;
+    	align-items: center;
+	 }
+	
+	
+	.motionworks-container {
+		background-color: #1E1A56;
+		display: inline-flex;
+		align-items:center;
+		justify-content: center;
+		padding: 0.5rem;
+		margin-bottom: 0.5rem;
+		.motionworks-logo {
+		  height: 2rem;
+		}
+	  }
+	
+	  .places-reset-button {
+		@media print {
+		  display: none;
+		}
+		button.menu-button {
+		  margin-bottom: 0.5rem;
+		  background-color: white;
+		  span {
+			display: flex;
+			align-items: center;
+		  }
+		}
+	  }
+	  .floating-container {
+		position: absolute;
+		left: 1rem;
+		top: 0.5rem;
+		z-index: 1;
+	  }
+	  .places-floating-controls {
+		@media print {
+		  display: none;
+		}
+		background-color: white;
+		border-radius: 1rem;
+		padding: 0.5rem;
+		z-index: 1;
+		menu-switch:not(:last-child) .menu-switch-container {
+		  margin-bottom: 0.5rem;
+		}
+	  }	
+    }

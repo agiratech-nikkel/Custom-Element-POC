@@ -1,0 +1,91 @@
+.header {
+    background-image: linear-gradient(to right, #00e0b4, #00caed);
+    height: 35vh;
+}
+
+.headertitel {
+    padding-top: 150px;
+    color: white;
+    font-size: 45px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.inputcard {
+    border-radius: 3px;
+    background-color: #fffcff;
+    height: 15vh;
+    width: 40%;
+    float: center;
+    margin: auto;
+    margin-top: 100px;
+    box-shadow: 1px 5px 1px 1px whitesmoke;
+}
+
+.newtodo {
+    color: #665c5c;
+    font-weight: 500;
+    font-size: 18px;
+    padding-top: 20px;
+    margin-left: 20px;
+}
+
+.input {
+    margin-top: 20px;
+}
+
+.inputbox {
+    width: 80%;
+    margin-left: 20px;
+    height: 3.5vh;
+    border: none;
+    border: 1px solid #e3e0e1;
+    outline: none;
+    border-radius: 5px;
+}
+
+.addbtn {
+    background-color: #ff007b;
+    color: white;
+    margin-left: 20px;
+}
+
+.pluse {
+    font-size: 23px;
+}
+
+input.inputbox::placeholder {
+    color: #e3e0e1;
+}
+
+.listdiv {
+    margin-top: 10vh;
+}
+
+.unorderlist {
+    font-size: 20px;
+    margin-left: 31%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 1vh;
+}
+
+.valueip {
+    width: 47%;
+    overflow: scroll
+}
+
+.checkbox {
+    margin-top: 3px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.valueip::-webkit-scrollbar {
+    display: none;
+}
+
+.strike {
+    text-decoration: line-through;
+}
